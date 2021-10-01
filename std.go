@@ -1,7 +1,15 @@
 package regexp2
 
-func CompileStd(re string) (*Regexp, error) {
-	return Compile(re, Multiline)
+func CompileStd(s string) (*Regexp, error) {
+	return Compile(s, Multiline)
+}
+
+func MustCompileStd(s string) *Regexp {
+	re, err := CompileStd(s)
+	if err != nil {
+		panic(err)
+	}
+	return re
 }
 
 // FindAllString is the 'All' version of FindString; it returns a slice of all
