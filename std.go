@@ -28,6 +28,31 @@ func (re *Regexp) FindAllString(s string, n int) []string {
 	return result
 }
 
+// FindAllStringIndex is the 'All' version of FindStringIndex; it returns a
+// slice of all successive matches of the expression, as defined by the 'All'
+// description in the package comment.
+// A return value of nil indicates no match.
+func (re *Regexp) FindAllStringIndex(s string, n int) [][]int {
+	m, err := re.FindStringMatch(s)
+	if err != nil {
+		println(err.Error())
+		return nil
+	}
+
+	var result [][]int
+	for m != nil {
+		result = append(result, []int{m.Group.Index, m.Group.Length})
+
+		m, err = re.FindNextMatch(m)
+		if err != nil {
+			println(err.Error())
+			return nil
+		}
+	}
+
+	return result
+}
+
 // FindAllStringSubmatch is the 'All' version of FindStringSubmatch; it
 // returns a slice of all successive matches of the expression, as defined by
 // the 'All' description in the package comment.
