@@ -28,6 +28,18 @@ func (re *Regexp) FindAllString(s string, n int) []string {
 	return result
 }
 
+func (re *Regexp) FindAllStringMatches(s string) []*Match {
+	var matches []*Match
+
+	m, _ := re.FindStringMatch(s)
+	for m != nil {
+		matches = append(matches, m)
+		m, _ = re.FindNextMatch(m)
+	}
+
+	return matches
+}
+
 // FindAllStringIndex is the 'All' version of FindStringIndex; it returns a
 // slice of all successive matches of the expression, as defined by the 'All'
 // description in the package comment.
