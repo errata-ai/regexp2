@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dlclark/regexp2/syntax"
+	"github.com/errata-ai/regexp2/syntax"
 )
 
 func TestBacktrack_CatastrophicTimeout(t *testing.T) {

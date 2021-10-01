@@ -10,7 +10,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/dlclark/regexp2/syntax"
+	"github.com/errata-ai/regexp2/syntax"
 )
 
 type runner struct {
