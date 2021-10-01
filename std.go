@@ -1,5 +1,33 @@
 package regexp2
 
+func CompileStd(re string) (*Regexp, error) {
+	return Compile(re, Multiline)
+}
+
+// FindAllString is the 'All' version of FindString; it returns a slice of all
+// successive matches of the expression, as defined by the 'All' description
+// in the package comment.
+// A return value of nil indicates no match.
+func (re *Regexp) FindAllString(s string, n int) []string {
+	var result []string
+
+	m, err := re.FindStringMatch(s)
+	if err != nil {
+		panic(err)
+	}
+
+	for m != nil {
+		result = append(result, m.Group.String())
+
+		m, err = re.FindNextMatch(m)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	return result
+}
+
 // FindAllStringSubmatch is the 'All' version of FindStringSubmatch; it
 // returns a slice of all successive matches of the expression, as defined by
 // the 'All' description in the package comment.
