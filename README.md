@@ -1,4 +1,7 @@
 # regexp2 - full featured regular expressions for Go
+
+> A fork of `dlclark/regexp2` providing a more similar API to `regexp`.
+
 Regexp2 is a feature-rich RegExp engine for Go.  It doesn't have constant time guarantees like the built-in `regexp` package, but it allows backtracking and is compatible with Perl5 and .NET.  You'll likely be better off with the RE2 engine from the `regexp` package and should only use this if you need to write very complex patterns or require compatibility with .NET.
 
 ## Basis of the engine
@@ -80,7 +83,7 @@ The default behavior of `regexp2` is to match the .NET regexp engine, however th
 * add support for named ascii character classes (e.g. `[[:foo:]]`)
 * add support for python-style capture groups (e.g. `(P<name>re)`)
 * change singleline behavior for `$` to only match end of string (like RE2) (see [#24](https://github.com/dlclark/regexp2/issues/24))
- 
+
 ```go
 re := regexp2.MustCompile(`Your RE2-compatible pattern`, regexp2.RE2)
 if isMatch, _ := re.MatchString(`Something to match`); isMatch {
