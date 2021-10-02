@@ -15,6 +15,7 @@ func MustCompileStd(s string) *Regexp {
 // FindAllString is the 'All' version of FindString; it returns a slice of all
 // successive matches of the expression, as defined by the 'All' description
 // in the package comment.
+//
 // A return value of nil indicates no match.
 func (re *Regexp) FindAllString(s string, n int) []string {
 	var result []string
@@ -31,6 +32,10 @@ func (re *Regexp) FindAllString(s string, n int) []string {
 		if err != nil {
 			panic(err)
 		}
+	}
+
+	if n > -1 {
+		result = result[:n]
 	}
 
 	return result
@@ -51,22 +56,23 @@ func (re *Regexp) FindAllStringMatches(s string) []*Match {
 // FindAllStringIndex is the 'All' version of FindStringIndex; it returns a
 // slice of all successive matches of the expression, as defined by the 'All'
 // description in the package comment.
+//
 // A return value of nil indicates no match.
 func (re *Regexp) FindAllStringIndex(s string, n int) [][]int {
+	var result [][]int
+
 	m, err := re.FindStringMatch(s)
 	if err != nil {
-		println(err.Error())
-		return nil
+		panic(err)
 	}
 
-	var result [][]int
 	for m != nil {
-		result = append(result, []int{m.Group.Index, m.Group.Length})
+		result = append(result,
+			[]int{m.Group.Index, m.Group.Index + m.Group.Length})
 
 		m, err = re.FindNextMatch(m)
 		if err != nil {
-			println(err.Error())
-			return nil
+			panic(err)
 		}
 	}
 
@@ -76,6 +82,7 @@ func (re *Regexp) FindAllStringIndex(s string, n int) [][]int {
 // FindAllStringSubmatch is the 'All' version of FindStringSubmatch; it
 // returns a slice of all successive matches of the expression, as defined by
 // the 'All' description in the package comment.
+//
 // A return value of nil indicates no match.
 func (re *Regexp) FindAllStringSubmatch(s string, n int) [][]string {
 	var result [][]string
@@ -109,20 +116,24 @@ func (re *Regexp) FindAllStringSubmatch(s string, n int) [][]string {
 // FindStringSubmatchIndex; it returns a slice of all successive matches of
 // the expression, as defined by the 'All' description in the package
 // comment.
+//
 // A return value of nil indicates no match.
 func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int {
+	var result [][]int
+
 	m, err := re.FindStringMatch(s)
 	if err != nil {
 		panic(err)
 	}
 
-	var result [][]int
 	for m != nil {
+		subs := []int{m.Group.Index, m.Group.Index + m.Group.Length}
+
 		m.populateOtherGroups()
-		subs := make([]int, 0, len(m.otherGroups)+1)
-		subs = append(subs, m.Group.Index)
 		for i := 0; i < len(m.otherGroups); i++ {
-			subs = append(subs, (&m.otherGroups[i]).Index)
+			g := m.otherGroups[i]
+			subs = append(subs, g.Index)
+			subs = append(subs, g.Index+g.Length)
 		}
 		result = append(result, subs)
 
@@ -141,5 +152,13 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int {
 // Since the StdRegexp as a whole cannot be named, names[0] is always
 // the empty string. The slice should not be modified.
 func (re *Regexp) SubexpNames() []string {
-	return re.GetGroupNames()
+	results := []string{}
+	for i, s := range re.capslist {
+		if i == 0 {
+			results = append(results, "")
+		} else {
+			results = append(results, s)
+		}
+	}
+	return results
 }
