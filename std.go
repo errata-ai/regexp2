@@ -12,6 +12,14 @@ func MustCompileStd(s string) *Regexp {
 	return re
 }
 
+func (re *Regexp) MatchStringStd(s string) bool {
+	match, err := re.MatchString(s)
+	if err != nil {
+		panic(err)
+	}
+	return match
+}
+
 // FindAllString is the 'All' version of FindString; it returns a slice of all
 // successive matches of the expression, as defined by the 'All' description
 // in the package comment.
