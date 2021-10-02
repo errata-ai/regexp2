@@ -146,6 +146,20 @@ func TestFindAllStringSubmatchIndex(t *testing.T) {
 	if !reflect.DeepEqual(a1, a2) {
 		t.Fatalf("Failed: %v, %v", a1, a2)
 	}
+
+	/* FIXME: There's a disconnect between rune/byte offets
+
+	re1 = regexp.MustCompile(`(?m)(?:(?P<Smart3>[”“]))`)
+	re2 = MustCompileStd(`(?m)(?:(?P<Smart3>[”“]))`)
+
+	s := `(smart or “curly” quotes).`
+
+	a1 = re1.FindAllStringSubmatchIndex(s, -1)
+	a2 = re2.FindAllStringSubmatchIndex(s, -1)
+
+	if !reflect.DeepEqual(a1, a2) {
+		t.Fatalf("Failed: %v, %v", a1, a2)
+	}*/
 }
 
 func TestSubexpNames(t *testing.T) {

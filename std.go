@@ -1,7 +1,7 @@
 package regexp2
 
 func CompileStd(s string) (*Regexp, error) {
-	return Compile(s, Multiline)
+	return Compile(s, RE2)
 }
 
 func MustCompileStd(s string) *Regexp {
