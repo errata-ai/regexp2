@@ -140,6 +140,9 @@ func (re *Regexp) FindAllStringSubmatchIndex(s string, n int) [][]int {
 		m.populateOtherGroups()
 		for i := 0; i < len(m.otherGroups); i++ {
 			g := m.otherGroups[i]
+			if g.Index+g.Length == 0 {
+				g.Index = -1
+			}
 			subs = append(subs, g.Index)
 			subs = append(subs, g.Index+g.Length)
 		}

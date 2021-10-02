@@ -129,6 +129,23 @@ func TestFindAllStringSubmatchIndex(t *testing.T) {
 	if !reflect.DeepEqual(a1, a2) {
 		t.Fatalf("Failed: %v, %v", a1, a2)
 	}
+
+	re1 = regexp.MustCompile(`(?i)(?m)\b(?:(?P<Spelling12>colour)|(?P<Spelling13>color))\b`)
+	re2 = MustCompileStd(`(?i)(?m)\b(?:(?<Spelling12>colour)|(?<Spelling13>color))\b`)
+
+	a1 = re1.FindAllStringSubmatchIndex("Red is a color. Blue is also a colour.", -1)
+	a2 = re2.FindAllStringSubmatchIndex("Red is a color. Blue is also a colour.", -1)
+
+	if !reflect.DeepEqual(a1, a2) {
+		t.Fatalf("Failed: %v, %v", a1, a2)
+	}
+
+	a1 = re1.FindAllStringSubmatchIndex("none", -1)
+	a2 = re2.FindAllStringSubmatchIndex("none", -1)
+
+	if !reflect.DeepEqual(a1, a2) {
+		t.Fatalf("Failed: %v, %v", a1, a2)
+	}
 }
 
 func TestSubexpNames(t *testing.T) {
