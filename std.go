@@ -12,6 +12,14 @@ func MustCompileStd(s string) *Regexp {
 	return re
 }
 
+func MatchString(pattern, s string) (bool, error) {
+	re, err := CompileStd(pattern)
+	if err != nil {
+		return false, err
+	}
+	return re.MatchStringStd(s), nil
+}
+
 func (re *Regexp) MatchStringStd(s string) bool {
 	match, err := re.MatchString(s)
 	if err != nil {
